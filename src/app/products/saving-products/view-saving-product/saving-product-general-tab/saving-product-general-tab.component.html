@@ -6,7 +6,6 @@
 
 <div class="tab-container mat-typography">
 
-
   <div fxLayout="row wrap" fxLayout.lt-md="column">
 
     <h2 class="mat-h2" fxFlexFill>{{ savingProduct.name }}</h2>
@@ -297,8 +296,50 @@
 
         </div>
 
-        <div *ngIf="savingProduct.feeToIncomeAccountMappings?.length" fxFlexFill fxLayout="row wrap"
-          fxLayout.lt-md="column">
+        <div fxFlexFill *ngIf="savingProduct.accrualCharges?.length > 0" fxLayout="row wrap" fxLayout.lt-md="column">
+
+          <h3 class="mat-h3" fxFlexFill>Accrual Charges</h3>
+
+          <mat-divider [inset]="true"></mat-divider>
+
+          <table fxFlexFill class="mat-elevation-z1" mat-table [dataSource]="savingProduct.accrualCharges">
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let charge">
+                {{ charge.name + ', ' + charge.currency.displaySymbol }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="chargeCalculationType">
+              <th mat-header-cell *matHeaderCellDef> Type </th>
+              <td mat-cell *matCellDef="let charge">
+                {{ charge.chargeCalculationType.value }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef> Amount </th>
+              <td mat-cell *matCellDef="let charge">
+                {{ charge.amount  }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="chargeTimeType">
+              <th mat-header-cell *matHeaderCellDef> Collected On </th>
+              <td mat-cell *matCellDef="let charge">
+                {{ charge.chargeTimeType.value }}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="chargesDisplayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: chargesDisplayedColumns;"></tr>
+
+          </table>
+
+        </div>
+
+        <h3 class="mat-h3" fxFlexFill>Accounting</h3>
 
           <h4 class="mat-h4" fxFlexFill>Fees to Specific Income Accounts</h4>
 
@@ -323,9 +364,9 @@
 
           </table>
 
-        </div>
+      </div>
 
-        <div *ngIf="savingProduct.penaltyToIncomeAccountMappings?.length" fxFlexFill fxLayout="row wrap"
+      <div *ngIf="savingProduct.penaltyToIncomeAccountMappings?.length" fxFlexFill fxLayout="row wrap"
           fxLayout.lt-md="column">
 
           <h4 class="mat-h4" fxFlexFill>Penalties to Specific Income Accounts</h4>
@@ -351,8 +392,6 @@
             <tr mat-row *matRowDef="let row; columns: feesPenaltyIncomeDisplayedColumns;"></tr>
 
           </table>
-
-        </div>
 
       </div>
 
