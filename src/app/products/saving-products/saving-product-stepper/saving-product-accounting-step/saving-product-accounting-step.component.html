@@ -42,7 +42,7 @@
         <mat-label>Fees receivable</mat-label>
         <mat-select formControlName="feeReceivableAccountId" required>
           <mat-option *ngFor="let assetAccount of assetAccountData" [value]="assetAccount.id">
-            {{ assetAccount.name }}
+            ({{ assetAccount.glCode }}) {{ assetAccount.name }}
           </mat-option>
         </mat-select>
         <mat-error>
@@ -54,7 +54,7 @@
         <mat-label>Penalties Receivable</mat-label>
         <mat-select formControlName="penaltyReceivableAccountId" required>
           <mat-option *ngFor="let assetAccount of assetAccountData" [value]="assetAccount.id">
-            {{ assetAccount.name }}
+            ({{ assetAccount.glCode }}) {{ assetAccount.name }}
           </mat-option>
         </mat-select>
         <mat-error>
@@ -106,7 +106,7 @@
         <mat-label>Interest payable</mat-label>
         <mat-select formControlName="interestPayableAccountId" required>
           <mat-option *ngFor="let liabilityAccount of liabilityAccountData" [value]="liabilityAccount.id">
-            {{ liabilityAccount.name }}
+            ({{ liabilityAccount.glCode }}) {{ liabilityAccount.name }}
           </mat-option>
         </mat-select>
         <mat-error>
