@@ -321,8 +321,16 @@ export class AccountingService {
    * @param {any} periodicAccruals Accruals to be executed.
    * @returns {Observable<any>}
    */
-  executePeriodicAccruals(periodicAccruals: any): Observable<any> {
-    return this.http.post('/runaccruals', periodicAccruals);
+  executePeriodicDepositAccruals(periodicAccruals: any): Observable<any> {
+    return this.http.post('/runaccruals/deposit', periodicAccruals);
+  }
+
+  /**
+   * @param {any} periodicAccruals Accruals to be executed.
+   * @returns {Observable<any>}
+   */
+  executePeriodicLoanAccruals(periodicAccruals: any): Observable<any> {
+    return this.http.post('/runaccruals/loan', periodicAccruals);
   }
 
   /**

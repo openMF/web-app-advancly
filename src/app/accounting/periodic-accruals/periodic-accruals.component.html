@@ -20,6 +20,15 @@
 
         </div>
 
+        <div fxLayout="row" fxLayout.lt-md="column">
+          <mat-label fxFlex="20%">Products type : </mat-label>
+          <mat-radio-group fxFlex="80%" fxLayout="row" fxLayoutGap="5%" fxLayout.lt-md="row" formControlName="productsType">
+            <mat-radio-button *ngFor="let productType of productsType; let i =  index" [value]="i+1">
+              {{ productType }}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+
       </mat-card-content>
 
       <mat-card-actions fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="5px">

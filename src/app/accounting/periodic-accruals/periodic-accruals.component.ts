@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AccountingService } from '../accounting.service';
 import { SettingsService } from 'app/settings/settings.service';
 import { Dates } from 'app/core/utils/dates';
+import { indexOf } from 'lodash';
 /**
  * Periodic accruals component.
  */
@@ -23,6 +24,8 @@ export class PeriodicAccrualsComponent implements OnInit {
   maxDate = new Date();
   /** Periodic accruals form. */
   periodicAccrualsForm: FormGroup;
+  /** Products Type*/
+  productsType = ['Deposit', 'Loan']
 
   /**
    * @param {FormBuilder} formBuilder Form Builder.
@@ -51,7 +54,8 @@ export class PeriodicAccrualsComponent implements OnInit {
    */
   createPeriodicAccrualsForm() {
     this.periodicAccrualsForm = this.formBuilder.group({
-      'tillDate': ['', Validators.required]
+      'tillDate': ['', Validators.required],
+      'productsType': [1]
     });
   }
 
@@ -60,16 +64,29 @@ export class PeriodicAccrualsComponent implements OnInit {
    * if successful redirects to accounting.
    */
   submit() {
+    const productsType = this.periodicAccrualsForm.value.productsType;
+    this.periodicAccrualsForm.removeControl('productsType');
+
     const periodicAccruals = this.periodicAccrualsForm.value;
+    
     // TODO: Update once language and date settings are setup
     periodicAccruals.locale = this.settingsService.language.code;
     periodicAccruals.dateFormat = this.settingsService.dateFormat;
     if (periodicAccruals.tillDate instanceof Date) {
       periodicAccruals.tillDate = this.dateUtils.formatDate(periodicAccruals.tillDate, this.settingsService.dateFormat);
     }
-    this.accountingService.executePeriodicAccruals(periodicAccruals).subscribe(() => {
-      this.router.navigate(['../'], { relativeTo: this.route });
-    });
+
+    if (productsType === 1){
+      this.accountingService.executePeriodicDepositAccruals(periodicAccruals).subscribe(() => {
+        this.router.navigate(['../'], { relativeTo: this.route });
+      });
+    }
+
+    if (productsType === 2){
+      this.accountingService.executePeriodicLoanAccruals(periodicAccruals).subscribe(() => {
+        this.router.navigate(['../'], { relativeTo: this.route });
+      });
+    }
   }
 
 }
