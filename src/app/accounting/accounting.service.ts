@@ -322,7 +322,7 @@ export class AccountingService {
    * @returns {Observable<any>}
    */
   executePeriodicDepositAccruals(periodicAccruals: any): Observable<any> {
-    return this.http.post('/rundepositaccruals', periodicAccruals);
+    return this.http.post('/runaccruals/deposit', periodicAccruals);
   }
 
   /**
@@ -330,7 +330,7 @@ export class AccountingService {
    * @returns {Observable<any>}
    */
   executePeriodicLoanAccruals(periodicAccruals: any): Observable<any> {
-    return this.http.post('/runloanaccruals', periodicAccruals);
+    return this.http.post('/runaccruals/loan', periodicAccruals);
   }
 
   /**
