@@ -133,6 +133,12 @@ export class SavingProductAccountingStepComponent implements OnInit, OnChanges {
             this.savingProductAccountingForm.addControl('interestPayableAccountId', new UntypedFormControl('', Validators.required));
           }
 
+          if (accountingRule === 3) {
+            this.savingProductAccountingForm.addControl('feeReceivableAccountId', new FormControl('', Validators.required));
+            this.savingProductAccountingForm.addControl('penaltyReceivableAccountId', new FormControl('', Validators.required));
+            this.savingProductAccountingForm.addControl('interestPayableAccountId', new FormControl('', Validators.required));
+          }
+
           if (this.isDormancyTrackingActive.value) {
             this.savingProductAccountingForm.addControl('escheatLiabilityId', new UntypedFormControl('', Validators.required));
           }
