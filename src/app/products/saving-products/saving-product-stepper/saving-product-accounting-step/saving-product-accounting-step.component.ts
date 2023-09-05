@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, UntypedFormArray, Validators, UntypedFormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -35,6 +35,8 @@ export class SavingProductAccountingStepComponent implements OnInit, OnChanges {
   paymentFundSourceDisplayedColumns: string[] = ['paymentTypeId', 'fundSourceAccountId', 'actions'];
   feesPenaltyIncomeDisplayedColumns: string[] = ['chargeId', 'incomeAccountId', 'actions'];
   accrualChargesDisplayedColumns: string[] = ['chargeId', 'actions'];
+
+  hasSavingsProductChargesLinked = false;
 
   constructor(private formBuilder: UntypedFormBuilder,
               public dialog: MatDialog) {
