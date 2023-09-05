@@ -24,8 +24,12 @@ export class FooterComponent implements OnInit, OnDestroy {
 
   /** Mifos X version. */
   versions: any = {
-    mifos: environment.version
-  }
+    mifos: environment.version,
+    fineract: {
+      version: '',
+      hash: ''
+    }
+  };
   /** Mifos X hash */
   hash: string = environment.hash;
   server = '';
@@ -67,8 +71,9 @@ export class FooterComponent implements OnInit, OnDestroy {
     this.getConfigurations();
     this.server = this.settingsService.server;
     this.versionService.getBackendInfo().subscribe((data: any) => {
-      console.log(data.build);
-      this.versions.fineract = data.build;
+      const buildVersion: string = data.git.build.version.split('-');
+      this.versions.fineract.version = buildVersion[0];
+      this.versions.fineract.hash = buildVersion[1];
     });
   }
 
@@ -90,6 +95,8 @@ export class FooterComponent implements OnInit, OnDestroy {
           this.timer = setTimeout(() => { this.getConfigurations(); }, 60000);
         }
       });
+    } else {
+      clearTimeout(this.timer);
     }
   }
 

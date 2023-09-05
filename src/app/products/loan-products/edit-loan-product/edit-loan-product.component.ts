@@ -14,6 +14,7 @@ import { LoanProductAccountingStepComponent } from '../loan-product-stepper/loan
 import { ProductsService } from 'app/products/products.service';
 import { GlobalConfiguration } from 'app/system/configurations/global-configurations-tab/configuration.model';
 import { LoanProducts } from '../loan-products';
+import { PaymentAllocation, PaymentAllocationTransactionType, PaymentAllocationTransactionTypes } from '../loan-product-stepper/loan-product-payment-strategy-step/payment-allocation-model';
 
 @Component({
   selector: 'mifosx-edit-loan-product',
@@ -32,6 +33,13 @@ export class EditLoanProductComponent implements OnInit {
   loanProductAndTemplate: any;
   accountingRuleData = ['None', 'Cash', 'Accrual (periodic)', 'Accrual (upfront)'];
   itemsByDefault: GlobalConfiguration[] = [];
+
+  isAdvancedPaymentStrategy = false;
+  wasPaymentAllocationChanged = false;
+  paymentAllocation: PaymentAllocation[] = [];
+  transactionTypes: PaymentAllocationTransactionType[] = [
+    PaymentAllocationTransactionTypes.DEFAULT_TRANSACTION
+  ];
 
   /**
    * @param {ActivatedRoute} route Activated Route.
@@ -75,6 +83,18 @@ export class EditLoanProductComponent implements OnInit {
     return this.loanProductSettingsStep.loanProductSettingsForm;
   }
 
+  advancePaymentStrategy(value: string): void {
+    this.isAdvancedPaymentStrategy = (value === 'advanced-payment-allocation-strategy');
+  }
+
+  setPaymentAllocation(paymentAllocation: PaymentAllocation[]): void {
+    this.paymentAllocation = paymentAllocation;
+  }
+
+  paymentAllocationChanged(value: boolean): void {
+    this.wasPaymentAllocationChanged = value;
+  }
+
   get loanProductAccountingForm() {
     return this.loanProductAccountingStep.loanProductAccountingForm;
   }
@@ -92,13 +112,14 @@ export class EditLoanProductComponent implements OnInit {
         !this.loanProductTermsForm.pristine ||
         !this.loanProductSettingsForm.pristine ||
         !this.loanProductChargesStep.pristine ||
-        !this.loanProductAccountingForm.pristine
+        !this.loanProductAccountingForm.pristine ||
+        this.wasPaymentAllocationChanged
       )
     );
   }
 
   get loanProduct() {
-    return {
+    const loanProduct = {
       ...this.loanProductDetailsStep.loanProductDetails,
       ...this.loanProductCurrencyStep.loanProductCurrency,
       ...this.loanProductTermsStep.loanProductTerms,
@@ -106,6 +127,12 @@ export class EditLoanProductComponent implements OnInit {
       ...this.loanProductChargesStep.loanProductCharges,
       ...this.loanProductAccountingStep.loanProductAccounting
     };
+    // Default as empty array
+    loanProduct['paymentAllocation'] = [];
+    if (this.isAdvancedPaymentStrategy) {
+      loanProduct['paymentAllocation'] = this.paymentAllocation;
+    }
+    return loanProduct;
   }
 
   submit() {

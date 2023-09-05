@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -28,11 +28,12 @@ export class InvestorsComponent implements OnInit {
   /** Maximum transaction date allowed. */
   maxDate = new Date();
 
-  searchText = new FormControl('');
-  effectiveFromDate = new FormControl('');
-  effectiveToDate = new FormControl('');
-  settlementFromDate = new FormControl('');
-  settlementToDate = new FormControl('');
+  searchResults: any[] = [];
+  searchText = new UntypedFormControl('');
+  effectiveFromDate = new UntypedFormControl('');
+  effectiveToDate = new UntypedFormControl('');
+  settlementFromDate = new UntypedFormControl('');
+  settlementToDate = new UntypedFormControl('');
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   existsDataToFilter = false;
@@ -52,7 +53,7 @@ export class InvestorsComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   /** Entry type filter form control. */
-  entryTypeFilter = new FormControl('');
+  entryTypeFilter = new UntypedFormControl('');
   /** Entry type filter data. */
   entryTypeFilterData = [
     {
@@ -138,9 +139,14 @@ export class InvestorsComponent implements OnInit {
       this.totalRows = response.totalElements;
       this.existsDataToFilter = (response.totalElements > 0);
       this.dataSource.data = response.content;
+      this.searchResults = response.content;
       this.isLoading = false;
     });
 
+  }
+
+  transform(data: any): any {
+    return data;
   }
 
   pageChanged(event: PageEvent) {

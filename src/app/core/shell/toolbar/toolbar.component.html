@@ -54,10 +54,6 @@
     <mifosx-language-selector class="ml-1 language" fxHide.lt-md></mifosx-language-selector>
   </div>
 
-  <div #themePicker>
-    <mifosx-theme-picker fxHide.lt-md></mifosx-theme-picker>
-  </div>
-
   <div #notifications>
     <mifosx-notifications-tray fxHide.lt-md></mifosx-notifications-tray>
   </div>
@@ -93,11 +89,11 @@
 </mat-menu>
 
 <mat-menu #adminMenu="matMenu" [overlapTrigger]="false">
-  <button mat-menu-item [routerLink]="['/users']">{{ 'labels.menus.Users' | translate }}</button>
+  <button mat-menu-item (click)="navigateMenu('/appusers')">{{ 'labels.menus.Users' | translate }}</button>
   <button mat-menu-item [routerLink]="['/organization']">{{ 'labels.menus.Organization' | translate }}</button>
   <button mat-menu-item [routerLink]="['/system']">{{ 'labels.menus.System' | translate }}</button>
   <button mat-menu-item [routerLink]="['/products']">{{ 'labels.menus.Products' | translate }}</button>
-  <button mat-menu-item [routerLink]="['/templates']">{{ 'labels.menus.Templates' | translate }}</button>
+  <button mat-menu-item routerLink="/templates">{{ 'labels.menus.Templates' | translate }}</button>
 </mat-menu>
 
 <mat-menu #selfServiceMenu="matMenu" [overlapTrigger]="false">
