@@ -21,10 +21,10 @@
         </div>
 
         <div fxLayout="row" fxLayout.lt-md="column">
-          <mat-label fxFlex="20%">Products type : </mat-label>
-          <mat-radio-group fxFlex="80%" fxLayout="row" fxLayoutGap="5%" fxLayout.lt-md="row" formControlName="productsType">
-            <mat-radio-button *ngFor="let productType of productsType; let i =  index" [value]="i+1">
-              {{ productType }}
+          <mat-label fxFlex="25%">Products to accrue : </mat-label>
+          <mat-radio-group fxFlex="75%" fxLayout="row" fxLayoutGap="5%" fxLayout.lt-md="row" formControlName="products">
+            <mat-radio-button *ngFor="let product of productsToAccrue; let i =  index" [value]="i+1">
+              {{ product }}
             </mat-radio-button>
           </mat-radio-group>
         </div>
