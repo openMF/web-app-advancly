@@ -82,36 +82,36 @@
           <tbody>
             <tr *ngIf="savingsAccountData.summary.totalWithdrawals">
               <td>Total Withdrawls</td>
-              <td>{{savingsAccountData.summary.totalWithdrawals | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
+              <td class="r-amount">{{savingsAccountData.summary.totalWithdrawals | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
             </tr>
             <tr *ngIf="savingsAccountData.summary.totalWithdrawalFees">
               <td>Withdrawals Fees</td>
-              <td>{{savingsAccountData.summary.totalWithdrawalFees | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
+              <td class="r-amount">{{savingsAccountData.summary.totalWithdrawalFees | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
             </tr>
             <tr *ngIf="savingsAccountData.summary.totalAnnualFees">
               <td>Annual Fees</td>
-              <td>{{savingsAccountData.summary.totalAnnualFees | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
+              <td class="r-amount">{{savingsAccountData.summary.totalAnnualFees | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
             </tr>
             <tr *ngIf="savingsAccountData.summary.totalInterestEarned >= 0">
               <td>Interest Earned</td>
-              <td>{{savingsAccountData.summary.totalInterestEarned | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
+              <td class="r-amount">{{savingsAccountData.summary.totalInterestEarned | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
             </tr>
             <tr *ngIf="savingsAccountData.summary.totalInterestPosted">
               <td>Interest Posted</td>
-              <td>{{savingsAccountData.summary.totalInterestPosted | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
+              <td class="r-amount">{{savingsAccountData.summary.totalInterestPosted | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
             </tr>
             <tr *ngIf="savingsAccountData.summary.interestNotPosted >= 0">
               <td>Interest Earned Not Posted</td>
-              <td>{{savingsAccountData.summary.interestNotPosted | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
+              <td class="r-amount">{{savingsAccountData.summary.interestNotPosted | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
             </tr>
             <tr *ngIf="savingsAccountData.summary.totalOverdraftInterestDerived">
               <td>Interest On Overdraft</td>
-              <td>
+              <td class="r-amount">
                 {{savingsAccountData.summary.totalOverdraftInterestDerived | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
             </tr>
             <tr *ngIf="savingsAccountData.summary.interestNotPosted < 0">
               <td>Overdraft Interest Not Posted</td>
-              <td>{{savingsAccountData.summary.interestNotPosted | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
+              <td class="r-amount">{{savingsAccountData.summary.interestNotPosted | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
             </tr>
             <tr *ngIf="savingsAccountData.nominalAnnualInterestRate">
               <td>Nominal Interest Rate</td>
@@ -135,7 +135,7 @@
             </tr>
             <tr *ngIf="savingsAccountData.withdrawalFee">
               <td>Withdrawal Fee</td>
-              <td>{{savingsAccountData.withdrawalFee.amount | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
+              <td class="r-amount">{{savingsAccountData.withdrawalFee.amount | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
             </tr>
             <tr *ngIf="savingsAccountData.lastActiveTransactionDate">
               <td>Last Active Transaction Date</td>
@@ -159,16 +159,16 @@
             </tr>
             <tr *ngIf="savingsAccountData.annualFee">
               <td>Annual Fee</td>
-              <td>{{savingsAccountData.annualFee.amount | currency:currencyCode:'symbol-narrow':'1.2-2'}}
+              <td class="r-amount">{{savingsAccountData.annualFee.amount | currency:currencyCode:'symbol-narrow':'1.2-2'}}
               </td>
             </tr>
             <tr *ngIf="savingsAccountData.allowOverdraft">
               <td>Over Draft Limit</td>
-              <td>{{savingsAccountData.overdraftLimit | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
+              <td class="r-amount">{{savingsAccountData.overdraftLimit | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
             </tr>
             <tr *ngIf="savingsAccountData.allowOverdraft">
               <td>Min Overdraft Required for Interest Calculation</td>
-              <td>{{savingsAccountData.minOverdraftForInterestCalculation | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
+              <td class="r-amount">{{savingsAccountData.minOverdraftForInterestCalculation | currency:currencyCode:'symbol-narrow':'1.2-2'}}</td>
             </tr>
             <tr *ngIf="savingsAccountData.minBalanceForInterestCalculation">
               <td>Min Balance Required for Interest Calculation</td>
