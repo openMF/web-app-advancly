@@ -56,7 +56,7 @@ export class SavingAccountActionsComponent {
    */
   constructor(private route: ActivatedRoute) {
     this.route.data.subscribe((data: { savingsAccountActionData: any }) => {
-      if (data.savingsAccountActionData) {
+      if (data.savingsAccountActionData && data.savingsAccountActionData.currency) {
         this.currencyCode = data.savingsAccountActionData.currency.code;
       }
     });

@@ -1,3 +1,5 @@
+@import "assets/styles/helper";
+
 .tab-container {
   padding: 1%;
   margin: 1%;
@@ -17,6 +19,16 @@
     }
     .select-row:hover {
       cursor: pointer;
+    }
+    .strike {
+      text-decoration: line-through;
+      color: $status-active-overdue;
+    }
+    .linked {
+      color: $status-approved;
+    }
+    .accrual {
+      color: $msg-default;
     }
   }
 }
