@@ -374,6 +374,11 @@
   </div>
 
   <div fxFlexFill>
+    <span fxFlex="40%">Allow accrual posting in arrears:</span>
+    <span fxFlex="60%">{{ loanProduct.allowAccrualPostingInArrears | yesNo }}</span>
+  </div>
+
+  <div fxFlexFill>
     <span fxFlex="40%">Days in year:</span>
     <span fxFlex="60%">{{ loanProduct.daysInYearType.value }}</span>
   </div>

@@ -100,7 +100,9 @@ export class LoanProductSettingsStepComponent implements OnInit {
       'maxTrancheCount': this.loanProductsTemplate.maxTrancheCount,
       'outstandingLoanBalance': this.loanProductsTemplate.outstandingLoanBalance,
       'enableDownPayment': this.loanProductsTemplate.enableDownPayment,
-      'enableInstallmentLevelDelinquency': this.loanProductsTemplate.enableInstallmentLevelDelinquency
+      'enableInstallmentLevelDelinquency': this.loanProductsTemplate.enableInstallmentLevelDelinquency,
+      'useDueForRepaymentsConfigurations': this.loanProductsTemplate.useDueForRepaymentsConfigurations,
+      'allowAccrualPostingInArrears': this.loanProductsTemplate.allowAccrualPostingInArrears
     });
 
     if (this.loanProductsTemplate.dueDaysForRepaymentEvent != null &&
@@ -222,8 +224,7 @@ export class LoanProductSettingsStepComponent implements OnInit {
       'enableDownPayment': [false],
       'enableInstallmentLevelDelinquency': [false],
       'useDueForRepaymentsConfigurations': [false],
-      'dueDaysForRepaymentEvent': [''],
-      'overDueDaysForRepaymentEvent': [''],
+      'allowAccrualPostingInArrears': [false]
     });
   }
 

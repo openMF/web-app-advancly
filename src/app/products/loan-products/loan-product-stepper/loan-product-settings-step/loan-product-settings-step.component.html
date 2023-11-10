@@ -62,8 +62,6 @@
       </mat-error>
     </mat-form-field>
 
-    <span fxFlex="48%" fxHide.lt-md></span>
-
     <h4 fxFlex="98%" class="mat-h4">Moratorium <i class="fas fa-question" matTooltip="The moratorium information will default from the loan product settings, but can be changed for this loan account"></i></h4>
 
     <mat-form-field fxFlex="48%">
@@ -76,7 +74,7 @@
       <input type="number" matInput formControlName="graceOnInterestPayment">
     </mat-form-field>
 
-    <mat-divider fxFlex="98%"></mat-divider>
+    <h4 fxFlex="98%" class="mat-h4">Delinquency and Arrears</h4>
 
     <mat-form-field fxFlex="48%">
       <mat-label>Delinquency Bucket</mat-label>
@@ -91,18 +89,20 @@
       Enable installment level Delinquency
     </mat-checkbox>
 
-    <mat-divider fxFlex="98%"></mat-divider>
+    <mat-form-field fxFlex="48%">
+      <mat-label>Arrears tolerance</mat-label>
+      <input type="number" matInput matTooltip="With 'Arrears tolerance' you can specify a tolerance amount and if the loan is behind (in arrears),
+      but within the tolerance, it won't be classified as 'in arrears' and part of the portfolio at risk." formControlName="inArrearsTolerance">
+    </mat-form-field>
+
+    <mat-checkbox fxFlex="48%" labelPosition="before" formControlName="allowAccrualPostingInArrears" class="margin-v">
+      Allow Accrual posting when Loan is in Arrears
+    </mat-checkbox>
 
     <mat-form-field fxFlex="48%">
       <mat-label>Interest free period</mat-label>
       <input type="number" matInput matTooltip="If the Interest Free Period is '4' and the client's Repayment Frequency is every week,
       then for the first four weeks the client need not to pay interest, he has to pay principle due for that week only." formControlName="graceOnInterestCharged">
-    </mat-form-field>
-
-    <mat-form-field fxFlex="48%">
-      <mat-label>Arrears tolerance</mat-label>
-      <input type="number" matInput matTooltip="With 'Arrears tolerance' you can specify a tolerance amount and if the loan is behind (in arrears),
-      but within the tolerance, it won't be classified as 'in arrears' and part of the portfolio at risk." formControlName="inArrearsTolerance">
     </mat-form-field>
 
     <mat-form-field fxFlex="48%">
