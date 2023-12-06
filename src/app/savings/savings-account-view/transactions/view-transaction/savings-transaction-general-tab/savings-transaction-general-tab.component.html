@@ -31,7 +31,7 @@
       <div fxLayout="row wrap" class="content">
 
         <div fxFlex="50%" class="mat-body-strong">
-          Transaction Id
+          {{"labels.inputs.Transaction Id" | translate }}
         </div>
 
         <div fxFlex="50%">
@@ -39,7 +39,7 @@
         </div>
 
         <div fxFlex="50%" class="mat-body-strong">
-          Type
+          {{"labels.inputs.Type" | translate }}
         </div>
 
         <div fxFlex="50%">
@@ -47,7 +47,7 @@
         </div>
 
         <div fxFlex="50%" class="mat-body-strong">
-          Transaction Date
+          {{"labels.inputs.Transaction Date" | translate }}
         </div>
 
         <div fxFlex="50%">
@@ -55,7 +55,7 @@
         </div>
 
         <div fxFlex="50%" class="mat-body-strong">
-          Currency
+          {{"labels.inputs.Currency" | translate }}
         </div>
 
         <div fxFlex="50%">
@@ -63,15 +63,15 @@
         </div>
 
         <div fxFlex="50%" class="mat-body-strong">
-          Amount
+          {{"labels.inputs.Amount" | translate }}
         </div>
 
         <div fxFlex="50%">
-          {{ transactionData.amount | currency }} {{ transactionData.currency.code }}
+          {{ transactionData.amount | currency:transactionData.currency.code:'symbol-narrow':'1.2-2' }}
         </div>
 
         <div fxFlex="50%" class="mat-body-strong">
-          Note
+          {{"labels.inputs.Note" | translate }}
         </div>
 
         <div fxFlex="50%">
