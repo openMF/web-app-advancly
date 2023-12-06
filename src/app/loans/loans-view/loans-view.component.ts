@@ -13,6 +13,8 @@ import { LoansAccountButtonConfiguration } from './loan-accounts-button-config';
 import { ConfirmationDialogComponent } from '../../shared/confirmation-dialog/confirmation-dialog.component';
 import { DeleteDialogComponent } from 'app/shared/delete-dialog/delete-dialog.component';
 import { LoanStatus } from '../models/loan-status.model';
+import { Currency } from 'app/shared/models/general.model';
+import { DelinquencyPausePeriod } from '../models/loan-account.model';
 
 @Component({
   selector: 'mifosx-loans-view',
@@ -41,7 +43,9 @@ export class LoansViewComponent implements OnInit {
   /** Disburse Transaction number */
   disburseTransactionNo = 0;
 
+  loanDelinquencyClassificationStyle = '';
   loanStatus: LoanStatus;
+  currency: Currency;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -52,6 +56,7 @@ export class LoansViewComponent implements OnInit {
       this.loanDatatables = data.loanDatatables;
       this.loanDisplayArrearsDelinquency = data.loanArrearsDelinquencyConfig.value || 0;
       this.loanStatus = this.loanDetailsData.status;
+      this.currency = this.loanDetailsData.currency;
     });
     this.loanId = this.route.snapshot.params['loanId'];
     this.clientId = this.loanDetailsData.clientId;
@@ -77,6 +82,7 @@ export class LoansViewComponent implements OnInit {
     } else if (this.router.url.includes('centers')) {
       this.entityType = 'Center';
     }
+    this.loanDelinquencyClassification();
   }
 
   // Defines the buttons based on the status of the loan account
@@ -194,6 +200,17 @@ export class LoansViewComponent implements OnInit {
         });
       }
     });
+  }
+
+  loanDelinquencyClassification(): void {
+    this.loanDelinquencyClassificationStyle = '';
+    if (this.loanDetailsData.delinquent && this.loanDetailsData.delinquent.delinquencyPausePeriods) {
+      this.loanDetailsData.delinquent.delinquencyPausePeriods.some((period: DelinquencyPausePeriod) => {
+        if (period.active) {
+          this.loanDelinquencyClassificationStyle = 'fa fa-stop status-pending';
+        }
+      });
+    }
   }
 
   iconLoanStatusColor() {

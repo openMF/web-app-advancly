@@ -58,6 +58,8 @@ import { ExternalAssetOwnerTabComponent } from './loans-view/external-asset-owne
 import { ExternalAssetOwnerResolver } from './common-resolvers/external-asset-owner.resolver';
 import { ExternalAssetOwnerActiveTransferResolver } from './common-resolvers/external-asset-owner-active-transfer.resolver';
 import { LoanCollateralsResolver } from './common-resolvers/loan-collaterals.resolver';
+import { LoanDelinquencyDataResolver } from './common-resolvers/loan-delinquency-data.resolver';
+import { LoanDelinquencyActionsResolver } from './common-resolvers/loan-delinquency-actions.resolver';
 
 /** Loans Route. */
 const routes: Routes = [
@@ -131,7 +133,9 @@ const routes: Routes = [
             path: 'delinquencytags',
             data: { title: 'Loans Delinquency Tags', breadcrumb: 'Delinquency Tags', routeParamBreadcrumb: false },
             resolve: {
-              loanDelinquencyTagsData: LoanDelinquencyTagsResolver
+              loanDelinquencyTagsData: LoanDelinquencyTagsResolver,
+              loanDelinquencyData: LoanDelinquencyDataResolver,
+              loanDelinquencyActions: LoanDelinquencyActionsResolver
             },
             children: [
               {
@@ -363,7 +367,8 @@ const routes: Routes = [
     GLIMViewResolver,
     GSIMAccountsResolver,
     GLIMLoanTemplateResolver,
-    ExternalAssetOwnerResolver
+    ExternalAssetOwnerResolver,
+    LoanDelinquencyDataResolver
   ]
 })
 

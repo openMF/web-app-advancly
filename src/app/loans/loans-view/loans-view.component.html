@@ -1,4 +1,4 @@
-<mat-card class="loan-card">
+<mat-card class="account-card">
 
   <mat-card-header fxLayout="column" class="header">
 
@@ -12,7 +12,7 @@
         </div>
       </div>
 
-      <div class="mat-typography loan-card-title">
+      <div class="mat-typography account-card-title">
         <mat-card-title>
           <div fxLayout="row" fxLayout.lt-md="column">
 
@@ -20,50 +20,62 @@
               <h3>
                 <i class="fa fa-stop" matTooltip="{{'labels.status.' + loanDetailsData.status.value | translate}}"
                   [ngClass]="loanDetailsData.inArrears?'status-active-overdue':( iconLoanStatusColor() | statusLookup)"></i>
-                {{'labels.heading.Loan Product' | translate}}: {{loanDetailsData.loanProductName}}
+                <span class="m-r-10">{{'labels.heading.Loan Product' | translate}}:</span> {{loanDetailsData.loanProductName}}
                 <mifosx-account-number accountNo="{{loanDetailsData.accountNo}}"></mifosx-account-number>
               </h3>
               <span class="loans-overview">
-                {{'labels.text.' + entityType | translate}} {{"labels.inputs.name" | translate}}: {{loanDetailsData.clientName ||
-                loanDetailsData.groupName}}<span class="m-l-10">({{loanDetailsData.clientAccountNo}})</span><br />
+                <span class="m-r-10">{{'labels.text.' + entityType | translate}} {{"labels.inputs.name" | translate}} :</span> {{loanDetailsData.clientName ||
+                loanDetailsData.groupName}}<span class="m-l-5">({{loanDetailsData.clientAccountNo}})</span><br />
               </span>
               <div *ngIf="loanDisplayArrearsDelinquency != 1">
-                <span class="loans-overview" *ngIf="loanDetailsData.delinquencyRange">
-                  {{"labels.inputs.Loan Account Classification" | translate}} :
-                  {{loanDetailsData?.delinquencyRange.classification}}<br />
-                </span>
-                <span class="loans-overview"
-                  *ngIf="loanDetailsData.delinquent && loanDetailsData.delinquent.pastDueDays > 0">
-                  {{"labels.inputs.Past Due Days" | translate}} : {{loanDetailsData?.delinquent.pastDueDays |
-                  formatNumber }}<br />
-                </span>
-                <span class="loans-overview" *ngIf="loanDetailsData.delinquent && loanDetailsData.delinquent.delinquentDays > 0
-                  && loanDetailsData.delinquent.pastDueDays != loanDetailsData.delinquent.delinquentDays">
-                  {{"labels.inputs.Delinquent Days" | translate}} : {{loanDetailsData?.delinquent.delinquentDays |
-                  formatNumber }}
-                </span>
+                <table class="account-overview">
+                  <tbody>
+                    <tr *ngIf="loanDetailsData.delinquencyRange">
+                      <td>{{"labels.inputs.Delinquency Classification" | translate}} :</td>
+                      <td>
+                        <span class="m-r-3"><i [ngClass]="loanDelinquencyClassificationStyle"></i></span>
+                        {{loanDetailsData?.delinquencyRange.classification}}
+                      </td>
+                    </tr>
+                    <tr *ngIf="loanDetailsData.delinquent && loanDetailsData.delinquent.pastDueDays > 0">
+                      <td>{{"labels.inputs.Past Due Days" | translate}} :</td>
+                      <td>{{loanDetailsData?.delinquent.pastDueDays | formatNumber }}</td>
+                    </tr>
+                    <tr *ngIf="loanDetailsData.delinquent && loanDetailsData.delinquent.delinquentDays > 0
+                      && loanDetailsData.delinquent.pastDueDays != loanDetailsData.delinquent.delinquentDays">
+                      <td>{{"labels.inputs.Delinquent Days" | translate}} :</td>
+                      <td>{{loanDetailsData?.delinquent.delinquentDays | formatNumber }}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
 
             <div *ngIf="loanDetailsData.summary" class="loans-overview mat-typography" fxFlex="40%">
-              <h3> {{"labels.heading.Loan Account OverView" | translate}} </h3>
-              <span>{{"labels.inputs.Current Balance" | translate}}: {{loanDetailsData.currency.displaySymbol}}
-                {{loanDetailsData.summary.totalOutstanding | formatNumber}}</span><br>
-              <div *ngIf="loanDisplayArrearsDelinquency < 2">
-                <span *ngIf="loanDetailsData.inArrears">{{"labels.inputs.Arrears By" | translate}}:
-                  {{loanDetailsData.summary.totalOverdue | currency:currencyCode:'symbol-narrow':'1.2-2' }}
-                  <span *ngIf="!(loanDetailsData.summary.totalOverdue>=0)">{{"labels.inputs.Not Provided" | translate
-                    }}</span>
-                </span><br>
-                <span *ngIf="loanDetailsData.inArrears">{{"labels.inputs.Arrears Since" | translate}}:
-                  {{loanDetailsData.summary.overdueSinceDate |
-                  dateFormat}}
-                </span>
-                <span *ngIf="loanDetailsData.totalOverpaid && loanDetailsData.totalOverpaid > 0">
-                  {{"labels.inputs.Overpaid By" | translate}}: {{loanDetailsData.currency.displaySymbol}}
-                  {{loanDetailsData.totalOverpaid | formatNumber }}
-                </span>
-              </div>
+              <h3> {{"labels.heading.Account Overview" | translate}} </h3>
+              <table class="account-overview">
+                <tbody>
+                  <tr>
+                    <td>{{"labels.inputs.Current Balance" | translate }}</td>
+                    <td class="r-amount">{{loanDetailsData.summary.totalOutstanding | currency:currency.code:'symbol-narrow':'1.2-2'}}</td>
+                  </tr>
+                  <tr *ngIf="loanDisplayArrearsDelinquency < 2">
+                    <td>{{"labels.inputs.Arrears By" | translate }}</td>
+                    <td class="r-amount" *ngIf="loanDetailsData.summary.totalOverdue >= 0">
+                      {{loanDetailsData.summary.totalOverdue | currency:currency.code:'symbol-narrow':'1.2-2'}}
+                    </td>
+                    <td *ngIf="!(loanDetailsData.summary.totalOverdue>=0)">{{"labels.inputs.Not Provided" | translate}}</td>
+                  </tr>
+                  <tr *ngIf="loanDetailsData.inArrears">
+                    <td>{{"labels.inputs.Arrears Since" | translate }}</td>
+                    <td> {{loanDetailsData.summary.overdueSinceDate | dateFormat}} </td>
+                  </tr>
+                  <tr *ngIf="loanDetailsData.totalOverpaid && loanDetailsData.totalOverpaid > 0">
+                    <td>{{"labels.inputs.Overpaid By" | translate }}</td>
+                    <td class="r-amount">{{loanDetailsData.totalOverpaid | currency:currency.code:'symbol-narrow':'1.2-2'}} </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
             <span fxFlex="auto"></span>

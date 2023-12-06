@@ -1,12 +1,13 @@
 /** Angular Imports */
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { UntypedFormGroup, UntypedFormBuilder, Validators, UntypedFormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 /** Custom Services */
 import { RecurringDepositsService } from '../../recurring-deposits.service';
 import { SettingsService } from 'app/settings/settings.service';
 import { Dates } from 'app/core/utils/dates';
+import { Currency } from 'app/shared/models/general.model';
 
 /**
  * Deposits Recurring Deposits Account Component
@@ -17,6 +18,8 @@ import { Dates } from 'app/core/utils/dates';
   styleUrls: ['./deposit-recurring-deposits-account.component.scss']
 })
 export class DepositRecurringDepositsAccountComponent implements OnInit {
+
+  @Input() currency: Currency;
 
   /** Transactions Amount */
   transactionAmount: any;
@@ -34,6 +37,8 @@ export class DepositRecurringDepositsAccountComponent implements OnInit {
   maxDate = new Date();
   /** Deposits Recurring Deposit Account form. */
   depositRecurringDepositForm: UntypedFormGroup;
+
+  action: string;
 
   /**
    * Retrieves action details transactions template data from `resolve`
@@ -59,6 +64,8 @@ export class DepositRecurringDepositsAccountComponent implements OnInit {
         this.transactionAmount = this.transactionAmount + this.outstandingChargeAmount;
       }
     });
+    const name: string = this.route.snapshot.params['name'];
+    this.action = name.toLowerCase();
     this.accountId = this.route.parent.snapshot.params['recurringDepositAccountId'];
   }
 
@@ -75,13 +82,28 @@ export class DepositRecurringDepositsAccountComponent implements OnInit {
       'transactionDate': [new Date(), Validators.required],
       'transactionAmount': [this.transactionAmount, Validators.required],
       'paymentTypeId': ['', Validators.required],
-      'accountNumber': '',
-      'chequeNumber': '',
-      'routingCode': '',
-      'receiptNumber': '',
-      'bankNumber': '',
       'note': ''
     });
+  }
+
+  /**
+   * Add payment detail fields to the UI.
+   */
+  addPaymentDetails() {
+    this.showPaymentDetails = !this.showPaymentDetails;
+    if (this.showPaymentDetails) {
+      this.depositRecurringDepositForm.addControl('accountNumber', new UntypedFormControl(''));
+      this.depositRecurringDepositForm.addControl('checkNumber', new UntypedFormControl(''));
+      this.depositRecurringDepositForm.addControl('routingCode', new UntypedFormControl(''));
+      this.depositRecurringDepositForm.addControl('receiptNumber', new UntypedFormControl(''));
+      this.depositRecurringDepositForm.addControl('bankNumber', new UntypedFormControl(''));
+    } else {
+      this.depositRecurringDepositForm.removeControl('accountNumber');
+      this.depositRecurringDepositForm.removeControl('checkNumber');
+      this.depositRecurringDepositForm.removeControl('routingCode');
+      this.depositRecurringDepositForm.removeControl('receiptNumber');
+      this.depositRecurringDepositForm.removeControl('bankNumber');
+    }
   }
 
   /**
@@ -107,7 +129,9 @@ export class DepositRecurringDepositsAccountComponent implements OnInit {
       dateFormat,
       locale
     };
-    this.recurringDepositsService.executeRecurringDepositsAccountCommand(this.accountId, 'deposit', data).subscribe(() => {
+
+    delete data['note'];
+    this.recurringDepositsService.executeRecurringDepositsAccountCommand(this.accountId, this.action, data).subscribe(() => {
       this.router.navigate(['../../'], { relativeTo: this.route });
     });
   }
