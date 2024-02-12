@@ -94,7 +94,6 @@
       </mat-form-field>
     </ng-container>
 
-
     <mat-divider fxFlex="98%"></mat-divider>
 
     <h4 fxFlex="98%" class="mat-h4">{{"labels.heading.Minimum Deposit Term" | translate }}</h4>
@@ -194,6 +193,23 @@
       </mat-form-field>
     </ng-container>
 
+    <h3 fxFlex="98%" class="mat-h3">{{"labels.heading.Interest Transfer" | translate }}</h3>
+
+    <mat-checkbox fxFlex="48%" labelPosition="before" formControlName="transferInterestToSavings" class="margin-b">
+      {{"labels.inputs.Transfer Interest to Linked Savings Account" | translate }}?
+    </mat-checkbox>
+
+    <mat-form-field fxFlex="48%" *ngIf="recurringDepositAccountSettingsForm.contains('linkAccountId')" class="margin-b">
+      <mat-label>{{"labels.inputs.Linked Savings Account" | translate }}</mat-label>
+      <mat-select formControlName="linkAccountId" required>
+        <mat-option *ngFor="let account of savingsAccountsData" [value]="account.id">
+          {{ account.accountNo }}
+        </mat-option>
+      </mat-select>
+      <mat-error>
+        {{"labels.inputs.Linked Savings Account" | translate }} {{ "labels.commons.is"  |translate}} <strong>{{ "labels.commons.required" | translate}}</strong>
+      </mat-error>
+    </mat-form-field>
   </div>
 
   <div fxLayout="row" class="margin-t" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="2%">
