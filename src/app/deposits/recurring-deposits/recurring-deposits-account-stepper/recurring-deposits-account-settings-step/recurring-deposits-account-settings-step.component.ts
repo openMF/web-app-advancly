@@ -32,6 +32,8 @@ export class RecurringDepositsAccountSettingsStepComponent implements OnInit, On
   preClosurePenalInterestOnTypeData: any;
   /** Tax Group */
   taxGroup: any;
+  /** Savings Accounts Data */
+  savingsAccountsData: any;
 
   /**
    * @param {FormBuilder} formBuilder Form Builder
@@ -120,7 +122,8 @@ export class RecurringDepositsAccountSettingsStepComponent implements OnInit, On
       'preClosurePenalApplicable': [{ value: '', disabled: true }],
       'preClosurePenalInterest': [{ value: '', disabled: true }],
       'preClosurePenalInterestOnTypeId': [{ value: '', disabled: true }],
-      'minBalanceForInterestCalculation': [{ value: '', disabled: true }]
+      'minBalanceForInterestCalculation': [{ value: '', disabled: true }],
+      'transferInterestToSavings': false
     });
   }
 
@@ -130,6 +133,7 @@ export class RecurringDepositsAccountSettingsStepComponent implements OnInit, On
   setOptions() {
     this.lockinPeriodFrequencyTypeData = this.recurringDepositsAccountProductTemplate.lockinPeriodFrequencyTypeOptions;
     this.periodFrequencyTypeData = this.recurringDepositsAccountProductTemplate.periodFrequencyTypeOptions;
+    this.savingsAccountsData = this.recurringDepositsAccountProductTemplate.savingsAccounts;
     this.preClosurePenalInterestOnTypeData = this.recurringDepositsAccountProductTemplate.preClosurePenalInterestOnTypeOptions;
   }
 
@@ -146,6 +150,14 @@ export class RecurringDepositsAccountSettingsStepComponent implements OnInit, On
         this.recurringDepositAccountSettingsForm.addControl('expectedFirstDepositOnDate', new UntypedFormControl());
         this.recurringDepositAccountSettingsForm.addControl('recurringFrequency', new UntypedFormControl(''));
         this.recurringDepositAccountSettingsForm.addControl('recurringFrequencyType', new UntypedFormControl(''));
+      }
+    });
+    this.recurringDepositAccountSettingsForm.get('transferInterestToSavings').valueChanges.subscribe((value: boolean) => {
+      if (value) {
+        this.recurringDepositAccountSettingsForm.addControl('linkAccountId', new UntypedFormControl('', Validators.required));
+        this.recurringDepositAccountSettingsForm.get('linkAccountId').patchValue(this.recurringDepositsAccountProductTemplate.linkedAccount && this.recurringDepositsAccountProductTemplate.linkedAccount.id);
+      } else {
+        this.recurringDepositAccountSettingsForm.removeControl('linkAccountId');
       }
     });
   }
