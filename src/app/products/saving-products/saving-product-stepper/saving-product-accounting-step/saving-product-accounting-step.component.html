@@ -30,29 +30,21 @@
       >
       </mifosx-gl-account-selector>
 
-      <mat-form-field *ngIf="isAccrualAccounting()" fxFlex="48%">
-        <mat-label>Fees receivable</mat-label>
-        <mat-select formControlName="feeReceivableAccountId" required>
-          <mat-option *ngFor="let assetAccount of assetAccountData" [value]="assetAccount.id">
-            ({{ assetAccount.glCode }}) {{ assetAccount.name }}
-          </mat-option>
-        </mat-select>
-        <mat-error>
-          Fees receivable is <strong>required</strong>
-        </mat-error>
-      </mat-form-field>
+      <mifosx-gl-account-selector fxFlex="48%" *ngIf="isAccrualAccounting()" 
+        [inputFormControl]="savingProductAccountingForm.controls.feesReceivableAccountId"
+        [glAccountList]="assetAccountData"
+        [required]="true"
+        [inputLabel]="'Fees Receivable'"
+      >
+      </mifosx-gl-account-selector>
 
-      <mat-form-field *ngIf="isAccrualAccounting()" fxFlex="48%">
-        <mat-label>Penalties Receivable</mat-label>
-        <mat-select formControlName="penaltyReceivableAccountId" required>
-          <mat-option *ngFor="let assetAccount of assetAccountData" [value]="assetAccount.id">
-            ({{ assetAccount.glCode }}) {{ assetAccount.name }}
-          </mat-option>
-        </mat-select>
-        <mat-error>
-          Penalties receivable is <strong>required</strong>
-        </mat-error>
-      </mat-form-field>
+      <mifosx-gl-account-selector fxFlex="48%" *ngIf="isAccrualAccounting()" 
+        [inputFormControl]="savingProductAccountingForm.controls.penaltiesReceivableAccountId"
+        [glAccountList]="assetAccountData"
+        [required]="true"
+        [inputLabel]="'Penalties Receivable'"
+      >
+      </mifosx-gl-account-selector>
 
       <mat-divider fxFlex="98%"></mat-divider>
 
@@ -74,6 +66,14 @@
       >
       </mifosx-gl-account-selector>
 
+      <mifosx-gl-account-selector fxFlex="48%" *ngIf="isAccrualAccounting()"
+        [inputFormControl]="savingProductAccountingForm.controls.interestPayableAccountId"
+        [glAccountList]="liabilityAccountData"
+        [required]="true"
+        [inputLabel]="'Interest Payable'"
+      >
+      </mifosx-gl-account-selector>
+
       <mifosx-gl-account-selector fxFlex="48%" *ngIf="isDormancyTrackingActive.value"
         [inputFormControl]="savingProductAccountingForm.controls.escheatLiabilityId"
         [glAccountList]="liabilityAccountData"
@@ -81,20 +81,6 @@
         [inputLabel]="'Escheat liability'"
       >
       </mifosx-gl-account-selector>
-
-      <mat-form-field *ngIf="isAccrualAccounting()" fxFlex="48%">
-        <mat-label>Interest payable</mat-label>
-        <mat-select formControlName="interestPayableAccountId" required>
-          <mat-option *ngFor="let liabilityAccount of liabilityAccountData" [value]="liabilityAccount.id">
-            ({{ liabilityAccount.glCode }}) {{ liabilityAccount.name }}
-          </mat-option>
-        </mat-select>
-        <mat-error>
-          Interest payable is <strong>required</strong>
-        </mat-error>
-      </mat-form-field>
-
-      <mat-divider fxFlex="98%"></mat-divider>
 
       <h4 fxFlex="98%" class="mat-h4">{{'labels.heading.Expenses' | translate}}</h4>
 

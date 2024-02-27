@@ -392,6 +392,9 @@ export class RecurringDepositProductInterestRateChartStepComponent implements On
       if (chart.description === '') {
         delete chart.description;
       }
+      if (chart.id === null) {
+        delete chart.id;
+      }
     }
     return recurringDepositProductInterestRateChart;
   }
