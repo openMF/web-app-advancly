@@ -49,6 +49,7 @@ export class LoansViewComponent implements OnInit {
   loanStatus: LoanStatus;
   currency: Currency;
   loanReAged = false;
+  loanReAmortized = false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -61,11 +62,17 @@ export class LoansViewComponent implements OnInit {
       this.loanDisplayArrearsDelinquency = data.loanArrearsDelinquencyConfig.value || 0;
       this.loanStatus = this.loanDetailsData.status;
       this.currency = this.loanDetailsData.currency;
-      this.loanDetailsData.transactions.some((lt: LoanTransaction) => {
-        if (lt.type.reAge) {
-          this.loanReAged = true;
-        }
-      });
+      if (this.loanStatus.active) {
+        this.loanDetailsData.transactions.forEach((lt: LoanTransaction) => {
+          if (!lt.manuallyReversed) {
+            if (lt.type.reAge) {
+              this.loanReAged = true;
+            } else if (lt.type.reAmortize) {
+              this.loanReAmortized = true;
+            }
+          }
+        });
+      }
     });
     this.loanId = this.route.snapshot.params['loanId'];
     this.clientId = this.loanDetailsData.clientId;
@@ -74,7 +81,7 @@ export class LoansViewComponent implements OnInit {
   ngOnInit() {
     this.recalculateInterest = this.loanDetailsData.recalculateInterest || true;
     this.status = this.loanDetailsData.status.value;
-    if (this.loanDetailsData.status.active && this.loanDetailsData.multiDisburseLoan) {
+    if (this.loanStatus.active && this.loanDetailsData.multiDisburseLoan) {
       if (this.loanDetailsData && this.loanDetailsData.transactions) {
         this.loanDetailsData.transactions.forEach((transaction: any) => {
           if (transaction.type.disbursement) {
@@ -174,16 +181,36 @@ export class LoansViewComponent implements OnInit {
       // Allow Re-Ageing only when there is not any Re-Age transaction
       if (!this.loanReAged) {
         this.buttonConfig.addButton({
-          name: 'Re-Ageing',
+          name: 'Re-Age',
           icon: 'calendar',
           taskPermissionName: 'REAGE_LOAN',
+        });
+      } else {
+        this.buttonConfig.addButton({
+          name: 'Undo Re-Age',
+          icon: 'undo',
+          taskPermissionName: 'UNDO_REAGE_LOAN',
+        });
+      }
+
+      if (!this.loanReAmortized) {
+        this.buttonConfig.addButton({
+          name: 'Re-Amortize',
+          icon: 'calendar-alt',
+          taskPermissionName: 'REAMORTIZE_LOAN',
+        });
+      } else {
+        this.buttonConfig.addButton({
+          name: 'Undo Re-Amortize',
+          icon: 'undo',
+          taskPermissionName: 'UNDO_REAMORTIZE_LOAN',
         });
       }
     }
   }
 
-  loanAction(button: string) {
-    switch (button) {
+  loanAction(actionName: string) {
+    switch (actionName) {
       case 'Recover From Guarantor':
         this.recoverFromGuarantor();
         break;
@@ -197,8 +224,12 @@ export class LoansViewComponent implements OnInit {
         const queryParams: any = { loanId: this.loanId, accountType: 'fromloans' };
         this.router.navigate(['transfer-funds/make-account-transfer'], { relativeTo: this.route, queryParams: queryParams });
         break;
+      case 'Undo Re-Age':
+      case 'Undo Re-Amortize':
+        this.undoReAgeOrReAmortize(actionName);
+        break;
       default:
-        this.router.navigate(['actions', button], { relativeTo: this.route });
+        this.router.navigate(['actions', actionName], { relativeTo: this.route });
         break;
     }
   }
@@ -228,6 +259,24 @@ export class LoansViewComponent implements OnInit {
         }
       });
     }
+  }
+
+  undoReAgeOrReAmortize(actionName: string): void {
+    actionName = actionName.replace('Undo ', '');
+    const undoTransactionAccountDialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        heading: this.translateService.instant('labels.heading.Undo Transaction'),
+        dialogContext: this.translateService.instant('labels.dialogContext.Are you sure you want undo the transaction type') + ' ' + this.translateService.instant('labels.menus.' + actionName)
+      }
+    });
+    undoTransactionAccountDialogRef.afterClosed().subscribe((response: any) => {
+      if (response.confirm) {
+        const undoCommand = actionName === 'Re-Age' ? 'undoReAge' : 'undoReAmortize';
+        this.loansService.executeLoansAccountTransactionsCommand(String(this.loanId), undoCommand, {}).subscribe(() => {
+          this.reload();
+        });
+      }
+    });
   }
 
   iconLoanStatusColor() {
