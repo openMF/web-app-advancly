@@ -69,6 +69,10 @@ export class AccountTransfersService {
     return this.http.post(`/accounttransfers`, data);
   }
 
+  adjustAccountTransfer(accountTransferId: any, data: any): Observable<any> {
+    return this.http.post(`/accounttransfers/${accountTransferId}`, data);
+  }
+
   /**
    * @param clientId Client Id
    * @param clientName Client Name
