@@ -1,14 +1,6 @@
-<div fxLayoutAlign="end" class="container m-b-20 transaction-buttons" fxLayoutGap="2%">
-  <span *mifosxHasPermission="'ADJUST_ACCOUNTTRANSFER'">
-    <button mat-raised-button color="warn" (click)="undoTransaction()">
-      <fa-icon icon="undo" class="m-r-10"></fa-icon>{{ 'Undo' | translate}}
-    </button>
-  </span>
-</div>
-
 <div class="container">
-  <span *ngIf="!viewAccountTransferData.reversed">
-    <button mat-raised-button color="warn" *mifosxHasPermission="'ADJUST_ACCOUNTTRANSFER'" >
+  <span *mifosxHasPermission="'ADJUST_ACCOUNTTRANSFER'">
+    <button mat-raised-button color="warn" (click)="undoTransaction()" [disabled]="viewAccountTransferData.reversed">
       <fa-icon icon="undo" class="m-r-10"></fa-icon>{{ 'labels.buttons.Undo' | translate}}
     </button>
   </span>
