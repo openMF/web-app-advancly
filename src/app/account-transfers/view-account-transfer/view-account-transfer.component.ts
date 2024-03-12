@@ -55,7 +55,10 @@ export class ViewAccountTransferComponent {
         });
       }
     });
+  }
 
+  transactionColor(): string {
+    return this.viewAccountTransferData.reversed ? 'undo' : 'active';
   }
 
 }
