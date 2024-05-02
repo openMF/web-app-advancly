@@ -7,6 +7,7 @@ import { DeleteDialogComponent } from 'app/shared/delete-dialog/delete-dialog.co
 
 import { FormfieldBase } from 'app/shared/form-dialog/formfield/model/formfield-base';
 import { SelectBase } from 'app/shared/form-dialog/formfield/model/select-base';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'mifosx-saving-product-accounting-step',
@@ -40,7 +41,8 @@ export class SavingProductAccountingStepComponent implements OnInit, OnChanges {
   hasSavingsProductChargesLinked = false;
 
   constructor(private formBuilder: UntypedFormBuilder,
-    public dialog: MatDialog) {
+    private dialog: MatDialog,
+    private translateService: TranslateService) {
     this.createsavingProductAccountingForm();
     this.setConditionalControls();
   }
@@ -260,10 +262,12 @@ export class SavingProductAccountingStepComponent implements OnInit, OnChanges {
 
   getData(formType: string, values?: any) {
     switch (formType) {
-      case 'PaymentFundSource': return { title: 'Configure Fund Sources for Payment Channels', formfields: this.getPaymentFundSourceFormfields(values) };
-      case 'FeesIncome': return { title: 'Map Fees to Income Accounts', formfields: this.getFeesIncomeFormfields(values) };
-      case 'PenaltyIncome': return { title: 'Map Penalties to Specific Income Accounts', formfields: this.getPenaltyIncomeFormfields(values) };
-      case 'AccrualCharges': return { title: 'Select Charge to be Recognized As Accrual', formfields: this.getAccrualChargesFormfields(values) };
+      case 'PaymentFundSource': return { title: this.translateService.instant('labels.heading.Configure Fund Sources for Payment Channels'),
+        formfields: this.getPaymentFundSourceFormfields(values) };
+      case 'FeesIncome': return { title: this.translateService.instant('labels.heading.Map Fees to Specific Income Accounts'),
+        formfields: this.getFeesIncomeFormfields(values) };
+      case 'PenaltyIncome': return { title: this.translateService.instant('labels.heading.Map Penalties to Specific Income Accounts'),
+        formfields: this.getPenaltyIncomeFormfields(values) };
     }
   }
 
@@ -271,7 +275,7 @@ export class SavingProductAccountingStepComponent implements OnInit, OnChanges {
     const formfields: FormfieldBase[] = [
       new SelectBase({
         controlName: 'paymentTypeId',
-        label: 'Payment Type',
+        label: this.translateService.instant('labels.inputs.Payment Type'),
         value: values ? values.paymentTypeId : this.paymentTypeData[0].id,
         options: { label: 'name', value: 'id', data: this.paymentTypeData },
         required: true,
@@ -279,7 +283,7 @@ export class SavingProductAccountingStepComponent implements OnInit, OnChanges {
       }),
       new SelectBase({
         controlName: 'fundSourceAccountId',
-        label: 'Fund Source',
+        label: this.translateService.instant('labels.inputs.Fund Source'),
         value: values ? values.fundSourceAccountId : this.combinedAccountData[0].id,
         options: { label: 'name', value: 'id', data: this.combinedAccountData },
         required: true,
@@ -293,7 +297,7 @@ export class SavingProductAccountingStepComponent implements OnInit, OnChanges {
     const formfields: FormfieldBase[] = [
       new SelectBase({
         controlName: 'chargeId',
-        label: 'Fees',
+        label: this.translateService.instant('labels.inputs.Fees'),
         value: values ? values.chargeId : this.chargeData[0].id,
         options: { label: 'name', value: 'id', data: this.chargeData },
         required: true,
@@ -301,7 +305,7 @@ export class SavingProductAccountingStepComponent implements OnInit, OnChanges {
       }),
       new SelectBase({
         controlName: 'incomeAccountId',
-        label: 'Income Account',
+        label: this.translateService.instant('labels.inputs.Income Account'),
         value: values ? values.incomeAccountId : this.incomeAccountData[0].id,
         options: { label: 'name', value: 'id', data: this.incomeAccountData },
         required: true,
@@ -315,7 +319,7 @@ export class SavingProductAccountingStepComponent implements OnInit, OnChanges {
     const formfields: FormfieldBase[] = [
       new SelectBase({
         controlName: 'chargeId',
-        label: 'Penalty',
+        label: this.translateService.instant('labels.inputs.Penalty'),
         value: values ? values.chargeId : this.penaltyData[0].id,
         options: { label: 'name', value: 'id', data: this.penaltyData },
         required: true,
@@ -323,7 +327,7 @@ export class SavingProductAccountingStepComponent implements OnInit, OnChanges {
       }),
       new SelectBase({
         controlName: 'incomeAccountId',
-        label: 'Income Account',
+        label: this.translateService.instant('labels.inputs.Income Account'),
         value: values ? values.incomeAccountId : this.incomeAccountData[0].id,
         options: { label: 'name', value: 'id', data: this.incomeAccountData },
         required: true,

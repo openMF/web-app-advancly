@@ -15,7 +15,7 @@ export const environment = {
   fineractPlatformTenantIds: window['env']['fineractPlatformTenantIds'] || 'default',
   // For connecting to others servers running elsewhere update the base API URL
   baseApiUrls: window['env']['fineractApiUrls'] ||
-    'https://dev.mifos.io,https://demo.mifos.io,https://qa.mifos.io,https://staging.mifos.io,https://mobile.mifos.io,https://demo.fineract.dev,https://localhost:8443',
+    'https://dev.mifos.io,https://demo.mifos.io,https://qa.mifos.io,https://staging.mifos.io,https://mobile.mifos.io,https://demo.fineract.dev,https://localhost:8443,http://localhost:8443',
   // For connecting to server running elsewhere set the base API URL
   baseApiUrl: window['env']['baseApiUrl'] || 'https://demo.fineract.dev',
   allowServerSwitch: env.allow_switching_backend_instance,
@@ -41,7 +41,12 @@ export const environment = {
   // Time in seconds, default 60 seconds
   waitTimeForNotifications: window['env']['waitTimeForNotifications'] || 60,
   // Time in seconds, default 30 seconds
-  waitTimeForCOBCatchUp: window['env']['waitTimeForCOBCatchUp'] || 30
+  waitTimeForCOBCatchUp: window['env']['waitTimeForCOBCatchUp'] || 30,
+  session: {
+    timeout: {
+      idleTimeout: window['env']['sessionIdleTimeout'] || 300000, // 5 minutes
+    }
+  }
 };
 
 // Server URL

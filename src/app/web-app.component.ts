@@ -3,6 +3,7 @@ import { Component, OnInit, HostListener, HostBinding } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 
 /** rxjs Imports */
 import { merge } from 'rxjs';
@@ -20,6 +21,8 @@ import { ThemeStorageService } from './shared/theme-picker/theme-storage.service
 import { AlertService } from './core/alert/alert.service';
 import { AuthenticationService } from './core/authentication/authentication.service';
 import { SettingsService } from './settings/settings.service';
+import { IdleTimeoutService } from './home/timeout-dialog/idle-timeout.service';
+import { SessionTimeoutDialogComponent } from './home/timeout-dialog/session-timeout-dialog.component';
 
 /** Custom Items */
 import { Alert } from './core/alert/alert.model';
@@ -95,6 +98,8 @@ export class WebAppComponent implements OnInit {
    * @param {SettingsService} settingsService Settings Service.
    * @param {AuthenticationService} authenticationService Authentication service.
    * @param {Dates} dateUtils Dates service.
+   * @param {IdleTimeoutService} idle Idle timeout service.
+   * @param {MatDialog} dialog Dialog component.
    */
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
@@ -106,7 +111,9 @@ export class WebAppComponent implements OnInit {
               private settingsService: SettingsService,
               private authenticationService: AuthenticationService,
               private themingService: ThemingService,
-              private dateUtils: Dates) { }
+              private dateUtils: Dates,
+              private idle: IdleTimeoutService,
+              private dialog: MatDialog) { }
 
   @HostBinding('class') public cssClass: string;
 
@@ -119,15 +126,14 @@ export class WebAppComponent implements OnInit {
    *
    * 3) Page Title
    *
-   * 4) Theme
-   *
-   * 5) Alerts
+   * 4) Alerts
    */
   ngOnInit() {
     this.themingService.theme.subscribe((value: string) => {
       this.cssClass = value;
     });
     this.themingService.setInitialDarkMode();
+    this.themingService.setDarkMode((this.settingsService.themeDarkEnabled === 'true'));
 
     // Setup logger
     if (environment.production) {
@@ -137,7 +143,11 @@ export class WebAppComponent implements OnInit {
 
     // Setup translations
     this.translateService.addLangs(environment.supportedLanguages.split(','));
-    this.translateService.use(environment.defaultLanguage);
+    if (this.settingsService.language) {
+      this.translateService.use(this.settingsService.languageCode);
+    } else {
+      this.translateService.use(environment.defaultLanguage);
+    }
 
     this.i18nService = new I18nService(this.translateService);
 
@@ -178,12 +188,6 @@ export class WebAppComponent implements OnInit {
       localStorage.setItem('mifosXLocation', JSON.stringify(activities));
     });
 
-    // Setup theme
-    const theme = this.themeStorageService.getTheme();
-    if (theme) {
-      this.themeStorageService.installTheme(theme);
-    }
-
     // Setup alerts
     this.alertService.alertEvent.subscribe((alertEvent: Alert) => {
       this.snackBar.open(`${alertEvent.message}`, 'Close', {
@@ -210,6 +214,17 @@ export class WebAppComponent implements OnInit {
       this.settingsService.setTenantIdentifier(environment.fineractPlatformTenantId || 'default');
     }
     this.settingsService.setTenantIdentifiers(environment.fineractPlatformTenantIds.split(','));
+
+    // Subscribe to session timeout If IdleTimeout is higher than 0 (zero)
+    if (environment.session.timeout.idleTimeout > 0) {
+      this.idle.$onSessionTimeout.subscribe(() => {
+        if (this.authenticationService.getUserLoggedIn()) {
+          this.alertService.alert({type: 'Session timeout', message: this.translateService.instant('labels.text.Session timed out')});
+          this.dialog.open(SessionTimeoutDialogComponent);
+          this.logout();
+        }
+      });
+    }
   }
 
   logout() {
