@@ -1,18 +1,18 @@
 /** Angular Imports */
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute, Router } from '@angular/router';
 
 /** Custom Services */
 import { SystemService } from '../../system.service';
 
 /** Custom Components */
-import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
+import { TranslateService } from '@ngx-translate/core';
 import { DeleteDialogComponent } from 'app/shared/delete-dialog/delete-dialog.component';
+import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
 
 /**
  * Edit Hook Component.
@@ -48,13 +48,15 @@ export class EditHookComponent implements OnInit {
    * @param {Router} router Router for navigation.
    * @param {FormBuilder} formBuilder Form Builder.
    * @param {MatDialog} dialog Dialog Reference.
+   * @param {TranslateService} translateService Translate Service.
    */
   constructor(private route: ActivatedRoute,
-              private systemService: SystemService,
-              private router: Router,
-              private formBuilder: UntypedFormBuilder,
-              private dialog: MatDialog) {
-    this.route.data.subscribe(( data: { hooksTemplate: any, hook: any }) => {
+    private systemService: SystemService,
+    private router: Router,
+    private formBuilder: UntypedFormBuilder,
+    private dialog: MatDialog,
+    private translateService: TranslateService) {
+    this.route.data.subscribe((data: { hooksTemplate: any, hook: any }) => {
       this.hooksTemplateData = data.hooksTemplate;
       this.hookData = data.hook;
       this.eventsData = data.hook.events ? data.hook.events : [];
@@ -102,11 +104,13 @@ export class EditHookComponent implements OnInit {
       data: this.hooksTemplateData
     });
     addEventDialogRef.afterClosed().subscribe((response: any) => {
-    if (response) {
-      this.eventsData.push({ entityName: response.entity,
-                             actionName: response.action  });
-      this.dataSource.connect().next(this.eventsData);
-      this.eventsDataChanged = true;
+      if (response) {
+        this.eventsData.push({
+          entityName: response.entity,
+          actionName: response.action
+        });
+        this.dataSource.connect().next(this.eventsData);
+        this.eventsDataChanged = true;
       }
     });
   }
@@ -117,7 +121,7 @@ export class EditHookComponent implements OnInit {
    */
   deleteEvent(index: number) {
     const deleteEventDialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: { deleteContext: `event with entity name of ${this.eventsData[index].entityName}` }
+      data: { deleteContext: this.translateService.instant('labels.inputs.event with entity name of') + ' ' + this.eventsData[index].entityName }
     });
     deleteEventDialogRef.afterClosed().subscribe((response: any) => {
       if (response.delete) {
@@ -154,7 +158,7 @@ export class EditHookComponent implements OnInit {
     };
     this.systemService.updateHook(this.hookData.id, hook)
       .subscribe((response: any) => {
-        this.router.navigate(['../'], {relativeTo: this.route});
+        this.router.navigate(['../'], { relativeTo: this.route });
       });
   }
 

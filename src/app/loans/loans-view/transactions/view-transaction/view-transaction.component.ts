@@ -103,6 +103,7 @@ export class ViewTransactionComponent implements OnInit {
     });
     this.clientId = this.route.snapshot.params['clientId'];
     this.loanId = this.route.snapshot.params['loanId'];
+    console.log(this.transactionType);
   }
 
   ngOnInit(): void {
@@ -124,7 +125,7 @@ export class ViewTransactionComponent implements OnInit {
   }
 
   allowChargebackTransaction(transactionType: LoanTransactionType): boolean {
-    return (transactionType.repayment
+    return (transactionType.repayment || transactionType.interestPaymentWaiver
       || transactionType.goodwillCredit || transactionType.payoutRefund
       || transactionType.merchantIssuedRefund || transactionType.downPayment);
   }
@@ -176,7 +177,7 @@ export class ViewTransactionComponent implements OnInit {
       })
     ];
     const data = {
-      title: 'Chargeback Repayment Transaction',
+      title: `Chargeback ${this.transactionType.value} Transaction`,
       layout: { addButtonText: 'Chargeback' },
       formfields: formfields
     };
