@@ -119,19 +119,19 @@
         </tr>
         <tr>
           <td>{{'labels.inputs.Interest Compounding Period' | translate}}</td>
-          <td>{{savingsAccountData.interestCompoundingPeriodType.value | translateCatalog}}</td>
+          <td>{{savingsAccountData.interestCompoundingPeriodType.value | translateKey:'catalogs'}}</td>
         </tr>
         <tr>
           <td>{{'labels.inputs.Interest Posting Period' | translate}}</td>
-          <td>{{savingsAccountData.interestPostingPeriodType.value | translateCatalog}}</td>
+          <td>{{savingsAccountData.interestPostingPeriodType.value | translateKey:'catalogs'}}</td>
         </tr>
         <tr>
           <td>{{'labels.inputs.Interest Calculated Using' | translate}}</td>
-          <td>{{savingsAccountData.interestCalculationType.value | translateCatalog}}</td>
+          <td>{{savingsAccountData.interestCalculationType.value | translateKey:'catalogs'}}</td>
         </tr>
         <tr>
           <td>{{'labels.inputs.Days in Year' | translate}}</td>
-          <td>{{savingsAccountData.interestCalculationDaysInYearType.value | translateCatalog}}</td>
+          <td>{{savingsAccountData.interestCalculationDaysInYearType.value | translateKey:'catalogs'}}</td>
         </tr>
         <tr *ngIf="savingsAccountData.withdrawalFee">
           <td>{{'labels.inputs.Withdrawal Fee' | translate}}</td>
@@ -164,11 +164,11 @@
           </td>
         </tr>
         <tr *ngIf="savingsAccountData.allowOverdraft">
-          <td>{{'labels.inputs.Over Draft Limit' | translate}}</td>
+          <td>{{'labels.inputs.Overdraft Limit' | translate}}</td>
           <td class="r-amount">{{savingsAccountData.overdraftLimit | currency:currency.code:'symbol-narrow':'1.2-2'}}</td>
         </tr>
         <tr *ngIf="savingsAccountData.allowOverdraft">
-          <td>{{'labels.inputs.Min Overdraft Required for Interest Calculation' | translate}}</td>
+          <td>{{'labels.inputs.Minimum Overdraft Required for Interest Calculation' | translate}}</td>
           <td>{{savingsAccountData.minOverdraftForInterestCalculation | currency:currency.code:'symbol-narrow':'1.2-2'}}</td>
         </tr>
         <tr *ngIf="savingsAccountData.minBalanceForInterestCalculation">
