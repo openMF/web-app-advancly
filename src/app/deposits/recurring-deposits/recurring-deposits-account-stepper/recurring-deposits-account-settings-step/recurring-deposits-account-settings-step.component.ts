@@ -135,11 +135,11 @@ export class RecurringDepositsAccountSettingsStepComponent implements OnInit, On
   /**
    * Sets all select dropdown options.
    */
-  setOptions() {
-    this.lockinPeriodFrequencyTypeData = this.recurringDepositsAccountProductTemplate.lockinPeriodFrequencyTypeOptions;
-    this.periodFrequencyTypeData = this.recurringDepositsAccountProductTemplate.periodFrequencyTypeOptions;
-    this.savingsAccountsData = this.recurringDepositsAccountProductTemplate.savingsAccounts;
-    this.preClosurePenalInterestOnTypeData = this.recurringDepositsAccountProductTemplate.preClosurePenalInterestOnTypeOptions;
+  setOptions(recurringDepositsAccount: any) {
+    this.lockinPeriodFrequencyTypeData = recurringDepositsAccount.lockinPeriodFrequencyTypeOptions;
+    this.periodFrequencyTypeData = recurringDepositsAccount.periodFrequencyTypeOptions;
+    this.savingsAccountsData = recurringDepositsAccount.savingsAccounts;
+    this.preClosurePenalInterestOnTypeData = recurringDepositsAccount.preClosurePenalInterestOnTypeOptions;
   }
 
   /**
