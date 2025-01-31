@@ -35,6 +35,11 @@
         [glAccountList]="assetAccountData" [required]="true" [inputLabel]="'Penalties Receivable'">
       </mifosx-gl-account-selector>
 
+      <mifosx-gl-account-selector fxFlex="48%" *ngIf="isAccrualAccounting()"
+        [inputFormControl]="savingProductAccountingForm.controls.interestReceivableAccountId"
+        [glAccountList]="assetAccountData" [required]="true" [inputLabel]="'Interest Receivable'">
+      </mifosx-gl-account-selector>
+
       <mat-divider fxFlex="98%"></mat-divider>
 
       <h4 fxFlex="98%" class="mat-h4">{{'labels.heading.Liabilities' | translate}}</h4>
