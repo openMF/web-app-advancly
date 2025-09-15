@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   allowServerSwitch(): boolean {
-    return environment.allowServerSwitch === false ? false : true;
+    return environment.allowServerSwitch === 'false' ? false : true;
   }
 
 }
