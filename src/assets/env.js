@@ -17,7 +17,7 @@
 
   window['env']['preloadClients'] = '';
 
-  window['env']['allowServerSwitch'] = '';
+  window['env']['allowServerSwitch'] = 'true';
 
   window['env']['production'] = 'false';
 
