@@ -34,7 +34,7 @@ export const environment = {
 
   displayBackEndInfo: window['env']['displayBackEndInfo'] || 'true',
   displayTenantSelector: window['env']['displayTenantSelector'] || 'true',
-  // Time in seconds, default 60 seconds
+    // Time in seconds, default 60 seconds
   waitTimeForNotifications: window['env']['waitTimeForNotifications'] || 60,
   // Time in seconds, default 30 seconds
   waitTimeForCOBCatchUp: window['env']['waitTimeForCOBCatchUp'] || 30,
